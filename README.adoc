@@ -11,12 +11,19 @@ enviornment for extending DV with Couchbase translator
 The following steps can be used to configure and run the demo in docker container
 
 . Download project
+. TBD/get url[Download JBoss EAP 6.4]
 . http://www.jboss.org/products/datavirt/download/[Download JBoss Data Virtualization]
 . Add products to installs directory
 . Copy Dockerfile and .dockerignore files in support/docker directory to the
 project root
-. Build demo image
 
+. Build EAP demo image
+[source,bash]
+----
+$ sudo docker build -f /community/dv-couchbase/support/docker/eap/DockerFile -t jmarley/eap6.4:v0 .
+----
+
+. Build JDV demo image
 [source,bash]
 ----
 $ sudo docker build -t jmarley/dv-couchbase .

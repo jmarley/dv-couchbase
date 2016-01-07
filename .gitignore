@@ -1,1 +1,6 @@
 installs/jboss-dv-installer-6.2.0.redhat-3.jar
+installs/jboss-eap*
+DockerFile
+eap_DockerFile
+scratch
+support/scripts/
