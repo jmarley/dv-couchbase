@@ -1,0 +1,52 @@
+# Use jbossdemocentral/developer as the base
+FROM jbossdemocentral/developer
+
+# Maintainer details
+MAINTAINER Jason Marley <jason.marley@redhat.com>
+
+# Environment Variables
+ENV EAP_HOME /opt/jboss/eap
+ENV EAP_VERSION_MAJOR 6
+ENV EAP_VERSION_MINOR 4
+ENV EAP_VERSION_MICRO 5
+ENV EAP_JBOSS_HOME /opt/jboss/jboss-eap-${EAP_VERSION_MAJOR}.${EAP_VERSION_MINOR}
+
+USER root
+
+# install unzip package
+RUN yum install unzip -y
+
+# Add Installation Files
+COPY installs/jboss-eap-${EAP_VERSION_MAJOR}.${EAP_VERSION_MINOR}.${EAP_VERSION_MICRO}-full-build.zip /opt/jboss/
+
+
+# Configure project prerequisites and run installer and cleanup installation components
+RUN unzip /opt/jboss/jboss-eap-${EAP_VERSION_MAJOR}.${EAP_VERSION_MINOR}.${EAP_VERSION_MICRO}-full-build.zip \
+  && /bin/sh ${EAP_JBOSS_HOME}/bin/add-user.sh --silent jbossadmin r3dhat1! \
+  && rm -rf /opt/jboss/jboss-eap-${EAP_VERSION_MAJOR}.${EAP_VERSION_MINOR}.${EAP_VERSION_MICRO}-full-build.zip
+
+# Copy demo, support files and helper script
+#COPY support/teiidfiles/  ${EAP_JBOSS_HOME}/teiidfiles/
+#COPY support/vault/VAULT.dat ${EAP_JBOSS_HOME}/vault/VAULT.dat
+#COPY support/vault.keystore ${EAP_JBOSS_HOME}/vault.keystore
+
+# Swtich back to root user to perform build and cleanup
+USER root
+
+# Adjust permissions and cleanup
+#RUN chown -R jboss:jboss ${EAP_JBOSS_HOME}/teiidfiles/
+RUN chown -R jboss:jboss ${EAP_JBOSS_HOME}
+
+# Run as JBoss
+USER jboss
+
+# Deploy appropriate VDB
+#RUN  mv ${EAP_JBOSS_HOME}/teiidfiles/vdb/ ${EAP_JBOSS_HOME}/standalone/deployments/ \
+#  && mv ${EAP_JBOSS_HOME}/teiidfiles/teiid-security-* ${EAP_JBOSS_HOME}/standalone/configuration/ \
+#  && mv ${EAP_JBOSS_HOME}/teiidfiles/standalone.dv.xml ${EAP_JBOSS_HOME}/standalone/configuration/standalone.xml
+
+# Expose Ports
+EXPOSE 9990 9999 8080
+
+# Default Command
+CMD ["/opt/jboss/jboss-eap-6.4/bin/standalone.sh" ,"-c" ,"standalone.xml" ,"-b" ,"0.0.0.0" ,"-bmanagement","0.0.0.0", "-bjboss.home.dir", "/opt/jboss/eap/jboss-eap-6.4/" ]
