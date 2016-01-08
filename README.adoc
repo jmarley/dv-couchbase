@@ -3,50 +3,63 @@
 :icons: font
 
 This project is meant to build the docker containers needed for setting up a lab
-enviornment for extending DV with Couchbase translator
+enviornment for extending DV to work with Couchbase
 
-== Option 1 - Install on your machine
-
-== Option 2 - Generate docker install
+== Generate docker install
 The following steps can be used to configure and run the demo in docker container
 
 . Download project
+[source,bash]
+----
+$ git clone git@github.com:jmarley/dv-couchbase.git
+----
 . http://developers.redhat.com/download-manager/file/jboss-eap-6.4.0.GA.zip[Download JBoss EAP 6.4]
 . http://www.jboss.org/products/datavirt/download/[Download JBoss Data Virtualization]
 . Add products to installs directory
++
+[source,bash]
+----
+$ mv ${download_home}/jboss-eap-6.4.0.GA.zip ${project_home}/dv-couchbase/installs/
+$ mv ${download_home}/jboss-dv-installer-6.2.0.redhat-3.jar ${project_home}/dv-couchbase/installs/
+----
 
+.Build EAP Container
 . Build EAP demo image
++
 [source,bash]
 ----
-$ sudo docker build -f ${your project root dir}/dv-couchbase/support/docker/eap/DockerFile -t jmarley/eap6.4:v0 .
+$ sudo docker build -f ${project_home}/dv-couchbase/support/docker/eap/DockerFile -t jmarley/eap6.4:v0 .
 ----
 
-. Build JDV demo image
+. Test EAP container
++
 [source,bash]
 ----
-$ sudo docker build -f ${your project root dir}/dv-couchbase/support/docker/dv/DockerFile -t jmarley/jdv6.2:v0 .
+$ sudo docker run -d -t jmarley/eap6.4
+----
+
+. http://localhost:9990[Login into EAP admin console]
+.. user: jbossadmin
+.. pass: r3dhat1!
+
+.Build JDV Container
+. Build JDV demo image
++
+[source,bash]
+----
+$ sudo docker build -f ${project_home}/dv-couchbase/support/docker/dv/DockerFile -t jmarley/jdv6.2:v0 .
 ----
 
 [start=6]
-. Start demo container
+. Test demo container
 [source,bash]
 ----
 $ sudo docker run -d -p 31000:31000 -p 8080:8080 -p 9990:9990 -p 9999:9999 \
--t jmarley/dv-federation-demo
+-t jmarley/dv-couchbase
 ----
 
 Additional information can be found in the jbossdemocentral docker
 https://github.com/jbossdemocentral/docker-developer[developer repository]
-
-== Use Case 1
-
-=== Objective
-
-=== Problem
-
-=== Solution
-
-=== Description
 
 == Supporting Articles
 
