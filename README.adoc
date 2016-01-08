@@ -9,6 +9,7 @@ enviornment for extending DV to work with Couchbase
 The following steps can be used to configure and run the demo in docker container
 
 . Download project
++
 [source,bash]
 ----
 $ git clone git@github.com:jmarley/dv-couchbase.git
@@ -50,8 +51,8 @@ $ sudo docker run -d -t jmarley/eap6.4
 $ sudo docker build -f ${project_home}/dv-couchbase/support/docker/dv/DockerFile -t jmarley/jdv6.2:v0 .
 ----
 
-[start=6]
-. Test demo container
+. Test JDV container
++
 [source,bash]
 ----
 $ sudo docker run -d -p 31000:31000 -p 8080:8080 -p 9990:9990 -p 9999:9999 \
