@@ -14,19 +14,17 @@ The following steps can be used to configure and run the demo in docker containe
 . http://developers.redhat.com/download-manager/file/jboss-eap-6.4.0.GA.zip[Download JBoss EAP 6.4]
 . http://www.jboss.org/products/datavirt/download/[Download JBoss Data Virtualization]
 . Add products to installs directory
-. Copy Dockerfile and .dockerignore files in support/docker directory to the
-project root
 
 . Build EAP demo image
 [source,bash]
 ----
-$ sudo docker build -f /community/dv-couchbase/support/docker/eap/DockerFile -t jmarley/eap6.4:v0 .
+$ sudo docker build -f ${your project root dir}/dv-couchbase/support/docker/eap/DockerFile -t jmarley/eap6.4:v0 .
 ----
 
 . Build JDV demo image
 [source,bash]
 ----
-$ sudo docker build -t jmarley/dv-couchbase .
+$ sudo docker build -f ${your project root dir}/dv-couchbase/support/docker/dv/DockerFile -t jmarley/jdv6.2:v0 .
 ----
 
 [start=6]
