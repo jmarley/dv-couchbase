@@ -62,6 +62,16 @@ $ sudo docker run -d -p 31000:31000 -p 8080:8080 -p 9990:9990 -p 9999:9999 \
 Additional information can be found in the jbossdemocentral docker
 https://github.com/jbossdemocentral/docker-developer[developer repository]
 
+== Couchbase Translator
+
+You may be wondering why the translator is separate from this project and the
+simple answer is for ease of development. Teiid provides a maven archetype that
+helps build the translator project and this README is primarily for setting up
+the infrastructure.
+
+.Git Clone
+https://github.com/jmarley/teiid/tree/couchbase
+
 == Supporting Articles
 
 == Released Versions
