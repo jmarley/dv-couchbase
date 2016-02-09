@@ -36,19 +36,21 @@ $ sudo docker build -f ${project_home}/dv-couchbase/support/docker/eap/DockerFil
 +
 [source,bash]
 ----
-$ sudo docker run -d -t jmarley/eap6.4
+$ sudo docker run -d -p 9990:9990 -p 8080:8080 -p 9999:9999 -t jmarley/eap6.4:v0
 ----
 
 . http://localhost:9990[Login into EAP admin console]
 .. user: jbossadmin
 .. pass: r3dhat1!
 
-.Build JDV Container
+.JDV Container
 . Build JDV demo image
 +
 [source,bash]
 ----
-$ sudo docker build -f ${project_home}/dv-couchbase/support/docker/dv/DockerFile -t jmarley/jdv6.2:v0 .
+$ sudo docker build \
+-f ${project_home}/dv-couchbase/support/docker/dv/DockerFile \
+-t jmarley/jdv6.2:v0 .
 ----
 
 . Test JDV container
@@ -56,11 +58,41 @@ $ sudo docker build -f ${project_home}/dv-couchbase/support/docker/dv/DockerFile
 [source,bash]
 ----
 $ sudo docker run -d -p 31000:31000 -p 8080:8080 -p 9990:9990 -p 9999:9999 \
--t jmarley/dv-couchbase
+-t jmarley/jdv6.2:v0
 ----
 
 Additional information can be found in the jbossdemocentral docker
 https://github.com/jbossdemocentral/docker-developer[developer repository]
+
+.Couchbase Container
+I used the offical couchbase docker for this, see Reference 1 for more information
+. Set up persistent storage
++
+[source,bash]
+----
+$ mkdir ${project_home}/dv-couchbase/scratch/couchbase && \
+chcon -Rt svirt_sandbox_file_t ${project_home}/dv-couchbase/scratch/couchbase
+
+----
+
+. Build Couchbase demo image
++
+[source,bash]
+----
+$ sudo docker build -f ${project_home}/dv-couchbase/support/docker/couchbase/DockerFile -t jmarley/couchbase .
+----
+
+. Test JDV container
++
+[source,bash]
+----
+$ sudo docker run -d \
+-v ${project_home}/dv-couchbase/scratch/couchbase:/opt/couchbase/var \
+-p 8091:8091 jmarley/couchbase
+----
+
+NOTE: make sure to have a persistent volume set up for couch otherwise you will
+have to recreate each time couch is instanciated
 
 == Couchbase Translator
 
@@ -75,3 +107,5 @@ https://github.com/jmarley/teiid/tree/couchbase
 == Supporting Articles
 
 == Released Versions
+
+. https://github.com/couchbase/docker/blob/7eb049d012eed3821ead1d8a728a07bf33db85a1/enterprise/couchbase-server/4.1.0/Dockerfile[Couchbase Offical DockerFile]

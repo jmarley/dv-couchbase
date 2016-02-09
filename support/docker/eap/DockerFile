@@ -5,7 +5,6 @@ FROM jbossdemocentral/developer
 MAINTAINER Jason Marley <jason.marley@redhat.com>
 
 # Environment Variables
-ENV EAP_HOME /opt/jboss/eap
 ENV EAP_VERSION_MAJOR 6
 ENV EAP_VERSION_MINOR 4
 ENV EAP_VERSION_MICRO 5
@@ -14,6 +13,7 @@ ENV EAP_JBOSS_HOME /opt/jboss/jboss-eap-${EAP_VERSION_MAJOR}.${EAP_VERSION_MINOR
 USER root
 
 # install unzip package
+RUN yum update -y
 RUN yum install unzip -y
 
 # Add Installation Files

@@ -5,12 +5,11 @@ FROM jmarley/eap6.4:v0
 MAINTAINER Jason Marley <jason.marley@redhat.com>
 
 # Environment Variables
-ENV DV_HOME /opt/jboss/dv
 ENV DV_VERSION_MAJOR 6
 ENV DV_VERSION_MINOR 2
 ENV DV_VERSION_MICRO 0
 ENV DV_RELEASE_CYCLE 3
-ENV DV_JBOSS_HOME $EAP_JBOSS_HOME
+ENV DV_JBOSS_HOME /opt/jboss/jboss-eap-6.4
 
 # Add Installation Files
 COPY installs/jboss-dv-installer-${DV_VERSION_MAJOR}.${DV_VERSION_MINOR}.${DV_VERSION_MICRO}.redhat-${DV_RELEASE_CYCLE}.jar /opt/jboss/
@@ -20,7 +19,7 @@ COPY support/installation-dv.xml.variables /opt/jboss/
 # Configure project prerequisites and run installer and cleanup installation components
 RUN sed -i "s:<installpath>.*</installpath>:<installpath>${DV_JBOSS_HOME}</installpath>:" /opt/jboss/installation-dv.xml \
   && java -jar /opt/jboss/jboss-dv-installer-${DV_VERSION_MAJOR}.${DV_VERSION_MINOR}.${DV_VERSION_MICRO}.redhat-${DV_RELEASE_CYCLE}.jar /opt/jboss/installation-dv.xml -variablefile /opt/jboss/installation-dv.xml.variables\
-  && rm -rf /opt/jboss/jboss-dv-installer-$DV_VERSION_MAJOR.$DV_VERSION_MINOR.$DV_VERSION_MICRO.${DV_RELEASE}-redhat-$DV_RELEASE_CYCLE.jar \
+  && rm -rf /opt/jboss/jboss-dv-installer-${DV_VERSION_MAJOR}.${DV_VERSION_MINOR}.${DV_VERSION_MICRO}.redhat-${DV_RELEASE_CYCLE}.jar \
   && rm -rf /opt/jboss/installation-dv.xml \
   && rm -rf /opt/jboss/installation-dv.xml.variables
 
@@ -50,4 +49,4 @@ EXPOSE 31000
 
 # Default Command
 # CMD ["/bin/bash"]
-# CMD [ "sh" , "-c" ,"${DV_JBOSS_HOME}/bin/standalone.sh" ,"-c" ,"standalone.xml" ,"-b" ,"0.0.0.0" ,"-bmanagement","0.0.0.0", "-bjboss.home.dir", "$DV_JBOSS_HOME" ]
+CMD [ "/opt/jboss/jboss-eap-6.4/bin/standalone.sh" ,"-c" ,"standalone.xml" ,"-b" ,"0.0.0.0" ,"-bmanagement","0.0.0.0", "-bjboss.home.dir", "/opt/jboss/jboss-eap-6.4" ]
